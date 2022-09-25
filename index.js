@@ -118,32 +118,33 @@ window.addEventListener("click", (event) => {
 
 window.addEventListener("keydown", (event) => {
     console.log(event.key);
+    const speed = 1;
     switch(event.key) {
         case "ArrowRight":
             console.log()
-            player.velocity.x += 1;
+            player.velocity.x += speed;
             break;
         case "ArrowLeft":
-            player.velocity.x -= 1;
+            player.velocity.x -= speed;
             break;
         case "ArrowDown":
-            player.velocity.y += 1;
+            player.velocity.y += speed;
             break;
         case "ArrowUp":
-            player.velocity.y -= 1;
+            player.velocity.y -= speed;
             break;
         case "d":
             console.log()
-            player.velocity.x += 1;
+            player.velocity.x += speed;
             break;
         case "a":
-            player.velocity.x -= 1;
+            player.velocity.x -= speed;
             break;
         case "s":
-            player.velocity.y += 1;
+            player.velocity.y += speed;
             break;
         case "w":
-            player.velocity.y -= 1;
+            player.velocity.y -= speed;
             break;
     }
 });
@@ -225,7 +226,7 @@ function spawnEnemies() {
         
         
         const color = `hsl(${Math.random() * 360}, 50%, 50%)`;
-        const angle = Math.atan2( canvas.height / 2 - y, canvas.width / 2 - x);
+        const angle = Math.atan2(player.y - y, player.x - x);
         const velocity = {x: Math.cos(angle), y: Math.sin(angle)};
         enemies.push(new Enemy(x, y, radius, color, velocity))
     }, 1000);
