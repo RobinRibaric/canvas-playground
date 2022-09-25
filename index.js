@@ -48,14 +48,10 @@ function animate() {
         const enemy = enemies[enemyIndex];
         enemy.update(ctx);
         const distance = Math.hypot(player.x - enemy.x, player.y - enemy.y);
+
+        //Ending the game on player collision
         if(distance - player.radius - enemy.radius < 1) {
             cancelAnimationFrame(animationId);
-
-         /*    setTimeout(() => {
-                enemies.splice(enemyIndex, 1);
-                cancelAnimationFrame(animationId);
-            }, 0); */
-            console.log("collision detected");
         }
 
 
@@ -64,7 +60,6 @@ function animate() {
             const projectile = projectiles[projectileIndex];
 
             const distance = Math.hypot(projectile.x - enemy.x, projectile.y - enemy.y);
-            console.log(distance);
             
             // Where projectile touches enemy
             if(distance -enemy.radius - projectile.radius < 1) {
@@ -79,18 +74,13 @@ function animate() {
                     gsap.to(enemy, {
                         radius: enemy.radius - 10,
                     });
-                    setTimeout(() => {
-                        projectiles.splice(projectileIndex, 1);
-                    }, 0);
-
+                    projectiles.splice(projectileIndex, 1);
                 } else {
                     //Remove enemy and projectile
-                    setTimeout(() => {
-                        enemies.splice(enemyIndex, 1); 
-                        projectiles.splice(projectileIndex, 1);
-                        score += 150;
+                    enemies.splice(enemyIndex, 1); 
+                    projectiles.splice(projectileIndex, 1);
+                    score += 150;
                      
-                    }, 0);
                 }
                 scoreCount.innerHTML = `${score}`;
                 console.log("collision detected");
