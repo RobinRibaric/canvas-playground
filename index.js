@@ -70,6 +70,7 @@ function animate() {
                 }
 
                 if(enemy.radius - 10 > 5 ) {
+                    score += 100;
                     gsap.to(enemy, {
                         radius: enemy.radius - 10,
                     });
@@ -78,14 +79,15 @@ function animate() {
                     }, 0);
 
                 } else {
+                    //Remove enemy and projectile
                     setTimeout(() => {
-                        enemies.splice(enemyIndex, 1);
-                        score += 1;
-                        scoreCount.innerHTML = `${score}`;
+                        enemies.splice(enemyIndex, 1); 
                         projectiles.splice(projectileIndex, 1);
+                        score += 150;
+                     
                     }, 0);
                 }
-               
+                scoreCount.innerHTML = `${score}`;
                 console.log("collision detected");
             }
         });
