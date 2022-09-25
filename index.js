@@ -10,6 +10,7 @@ const player = new Player(canvas.width / 2, canvas.height / 2, 30, "white");
 
 const projectiles = [];
 const enemies = [];
+const particles = [];
 let animationId;
 
 animate()
@@ -22,6 +23,14 @@ function animate() {
     ctx.fillRect(0,0, canvas.width, canvas.height);
     //ctx.clearRect(0,0,canvas.width,canvas.height);
     player.draw(ctx);
+
+    particles.forEach((particle, particleIndex) => {
+        if(particle.alpha <= 0) {
+            particles.splice(particleIndex, 1);
+        } else {
+            particle.update(ctx);
+        }
+    });
 
     projectiles.forEach((projectile, projectileIndex) => {
         projectile.update(ctx);
@@ -53,6 +62,11 @@ function animate() {
             
             // Where projectile touches enemy
             if(distance -enemy.radius - projectile.radius < 1) {
+                
+                // Create explosions
+                for(let i = 0; i < enemy.radius * 2; i++) {
+                    particles.push(new Particle(projectile.x, projectile.y, Math.random() * 2, enemy.color, {x: (Math.random() - 0.5 *(Math.random() * 6)), y: (Math.random() - 0.5) * (Math.random() * 6)}))
+                }
 
                 if(enemy.radius - 10 > 5 ) {
                     gsap.to(enemy, {
