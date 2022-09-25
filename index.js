@@ -25,24 +25,25 @@ function animate() {
     //ctx.clearRect(0,0,canvas.width,canvas.height);
     player.draw(ctx);
 
-    particles.forEach((particle, particleIndex) => {
+    for(let particleIndex = particles.length - 1; particleIndex >= 0; particleIndex--) {
+        const particle = particles[particleIndex];
         if(particle.alpha <= 0) {
             particles.splice(particleIndex, 1);
         } else {
             particle.update(ctx);
         }
-    });
+    }
 
-    projectiles.forEach((projectile, projectileIndex) => {
+    for(let projectileIndex = projectiles.length - 1; projectileIndex >= 0; projectileIndex--) {
+        const projectile = projectiles[projectileIndex];
+
         projectile.update(ctx);
         //removing projectiles when outside the screen
         if(projectile.x + projectile.radius < 0 || projectile.x - projectile.radius > canvas.width ||
             projectile.y + projectile.radius < 0 || projectile.y - projectile.radius > canvas.height) {
-            setTimeout(() => {
-                projectiles.splice(projectileIndex, 1);
-            }, 0)
-        }
-    });
+            projectiles.splice(projectileIndex, 1);
+        }  
+    }
    
     for(let enemyIndex = enemies.length - 1; enemyIndex >= 0; enemyIndex--) {
         const enemy = enemies[enemyIndex];
