@@ -62,6 +62,15 @@ function animate() {
             clearInterval(intervalId);
             gameOverUIScore.innerHTML = score;
             gameOverUI.style.display = "block";
+            gsap.fromTo(".game_over_ui", {
+                opacity: 0,
+                scale: 0.8,
+              }, {
+                scale: 1,
+                opacity: 1,
+                duration: 0.25,
+                ease: "expo",
+            });
         }
 
 
@@ -108,17 +117,41 @@ window.addEventListener("click", (event) => {
 });
 
 gameStartBtn.addEventListener("click",() => {
-    gameStartUI.style.display = "none";
+    //gameStartUI.style.display = "none";
     init();
     animate();
     spawnEnemies();
+    gsap.to(".game_start_ui", {
+        opacity: 0,
+        scale: 0.8,
+        duration: 0.25,
+        ease: "expo.in",
+        onComplete: () => {
+            gameStartUI.style.display = "none";
+        }
+    });
 });
 
 restartBtn.addEventListener("click", (event) => {
-  init();
-  animate();
-  spawnEnemies();
-  gameOverUI.style.display = "none";
+  //gameStartUI.style.display = "none";
+
+ 
+
+  //gameOverUI.style.display = "none";
+  gsap.to(".game_over_ui", {
+    opacity: 0,
+    scale: 0.8,
+    duration: 0.25,
+    ease: "expo.in",
+    onComplete: () => {
+        gameOverUI.style.display = "none";
+        init();
+        animate();
+        spawnEnemies();
+    }
+  });
+  
+
 });
 
 function init() {
