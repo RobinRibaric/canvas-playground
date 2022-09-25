@@ -1,9 +1,12 @@
 body {
     margin: 0;
     overflow: hidden;
+    font-family: sans-serif;
+    text-align: center;
+
     /* background: black;
    
-    text-align: center; */
+    */
 }
 
 .canvas {
@@ -16,7 +19,38 @@ body {
     left: 0;
     color: white;
     padding: 8px;
-    font-family: sans-serif;
     font-size: 14px;
     user-select: none;
+}
+
+.game_ui {
+    position: absolute;
+    background-color: white;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    padding: 20px;
+    max-width: 500px;
+    width: 100%;
+    text-align: center;
+    border-radius: 10px;
+    display: none;
+}
+
+.game_ui_game_over {
+    font-size: 16px;
+    color: gray;
+}
+
+.game_ui_score {
+    font-size: 48px;
+    margin-bottom: 0;
+    margin-top: 8px;
+}
+
+.game_ui_score_label {
+    margin: 0;
+    font-size: 14px;
+    color: gray;
+    font-weight: bold;
 }

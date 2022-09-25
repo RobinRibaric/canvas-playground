@@ -1,5 +1,7 @@
 const canvas = document.querySelector(".canvas");
 const scoreCount = document.querySelector(".score");
+const gameUI = document.querySelector(".game_ui");
+const gameUIScore = document.querySelector(".game_ui_score");
 
 canvas.width = window.innerWidth; // you can use just inner width
 canvas.height = window.innerHeight;
@@ -53,6 +55,8 @@ function animate() {
         //Ending the game on player collision
         if(distance - player.radius - enemy.radius < 1) {
             cancelAnimationFrame(animationId);
+            gameUIScore.innerHTML = score;
+            gameUI.style.display = "block";
         }
 
 
