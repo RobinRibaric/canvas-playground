@@ -29,7 +29,7 @@ function animate() {
     ctx.fillStyle = "rgba(0,0,0,0.1)";
     ctx.fillRect(0,0, canvas.width, canvas.height);
     //ctx.clearRect(0,0,canvas.width,canvas.height);
-    player.draw(ctx);
+    player.update(ctx);
 
     for(let particleIndex = particles.length - 1; particleIndex >= 0; particleIndex--) {
         const particle = particles[particleIndex];
@@ -116,8 +116,47 @@ window.addEventListener("click", (event) => {
     projectiles.push(projectile);
 });
 
+window.addEventListener("keydown", (event) => {
+    console.log(event.key);
+    switch(event.key) {
+        case "ArrowRight":
+            console.log()
+            player.velocity.x += 1;
+            console.log(player.velocity);
+            break;
+        case "ArrowLeft":
+            player.velocity.x -= 1;
+            break;
+        case "ArrowDown":
+            player.velocity.y += 1;
+            break;
+        case "ArrowUp":
+            player.velocity.y -= 1;
+            break;
+    }
+});
+
+/* window.addEventListener("keyup", (event) => {
+    console.log(event.key);
+    switch(event.key) {
+        case "ArrowRight":
+            player.velocity.x = 0;
+            break;
+        case "ArrowLeft":
+            player.velocity.x = 0;
+            break;
+        case "ArrowDown":
+            player.velocity.y = 0;
+
+            break;
+        case "ArrowUp":
+            player.velocity.y = 0;
+
+            break;
+    }
+}); */
+
 gameStartBtn.addEventListener("click",() => {
-    //gameStartUI.style.display = "none";
     init();
     animate();
     spawnEnemies();
@@ -133,11 +172,6 @@ gameStartBtn.addEventListener("click",() => {
 });
 
 restartBtn.addEventListener("click", (event) => {
-  //gameStartUI.style.display = "none";
-
- 
-
-  //gameOverUI.style.display = "none";
   gsap.to(".game_over_ui", {
     opacity: 0,
     scale: 0.8,
@@ -150,8 +184,6 @@ restartBtn.addEventListener("click", (event) => {
         spawnEnemies();
     }
   });
-  
-
 });
 
 function init() {
