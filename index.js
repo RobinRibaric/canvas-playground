@@ -110,9 +110,9 @@ function animate() {
 
 window.addEventListener("click", (event) => {
     const speed = 5;
-    const angle = Math.atan2(event.clientY - canvas.height / 2, event.clientX - canvas.width / 2);
+    const angle = Math.atan2(event.clientY - player.y, event.clientX - player.x);
     const velocity = {x: Math.cos(angle) * speed, y: Math.sin(angle) * speed};
-    const projectile = new Projectile(canvas.width / 2, canvas.height / 2, 5, 'white', velocity);
+    const projectile = new Projectile(player.x, player.y, 5, 'white', velocity);
     projectiles.push(projectile);
 });
 
@@ -122,7 +122,6 @@ window.addEventListener("keydown", (event) => {
         case "ArrowRight":
             console.log()
             player.velocity.x += 1;
-            console.log(player.velocity);
             break;
         case "ArrowLeft":
             player.velocity.x -= 1;
@@ -131,6 +130,19 @@ window.addEventListener("keydown", (event) => {
             player.velocity.y += 1;
             break;
         case "ArrowUp":
+            player.velocity.y -= 1;
+            break;
+        case "d":
+            console.log()
+            player.velocity.x += 1;
+            break;
+        case "a":
+            player.velocity.x -= 1;
+            break;
+        case "s":
+            player.velocity.y += 1;
+            break;
+        case "w":
             player.velocity.y -= 1;
             break;
     }
