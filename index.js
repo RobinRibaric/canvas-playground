@@ -43,7 +43,9 @@ function animate() {
             }, 0)
         }
     });
-    enemies.forEach((enemy, enemyIndex) => {
+   
+    for(let enemyIndex = enemies.length - 1; enemyIndex >= 0; enemyIndex--) {
+        const enemy = enemies[enemyIndex];
         enemy.update(ctx);
         const distance = Math.hypot(player.x - enemy.x, player.y - enemy.y);
         if(distance - player.radius - enemy.radius < 1) {
@@ -57,7 +59,10 @@ function animate() {
         }
 
 
-        projectiles.forEach((projectile, projectileIndex) => {
+
+        for(let projectileIndex = projectiles.length - 1; projectileIndex >= 0; projectileIndex--) {
+            const projectile = projectiles[projectileIndex];
+
             const distance = Math.hypot(projectile.x - enemy.x, projectile.y - enemy.y);
             console.log(distance);
             
@@ -90,9 +95,8 @@ function animate() {
                 scoreCount.innerHTML = `${score}`;
                 console.log("collision detected");
             }
-        });
-    });
-
+        }
+    }
 }
 
 window.addEventListener("click", (event) => {
