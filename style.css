@@ -23,7 +23,7 @@ body {
     user-select: none;
 }
 
-.game_ui {
+.game_over_ui {
     display: none;
     position: absolute;
     background-color: white;
@@ -37,25 +37,25 @@ body {
     border-radius: 10px;
 }
 
-.game_ui_game_over {
+.game_over_ui_label {
     font-size: 16px;
     color: gray;
 }
 
-.game_ui_score {
+.game_over_ui_score {
     font-size: 48px;
     margin-bottom: 0;
     margin-top: 8px;
 }
 
-.game_ui_score_label {
+.game_over_ui_score_label {
     margin: 0;
     font-size: 14px;
     color: gray;
     font-weight: bold;
 }
 
-.game_ui_restart_btn {
+.game_over_ui_restart_btn {
     margin-top: 12px;
     background-color: rgb(77, 77, 250);
     color: white;
@@ -64,6 +64,6 @@ body {
     padding: 8px 16px;
 }
 
-.game_ui_restart_btn:hover {
+.game_over_ui_restart_btn:hover {
     cursor: pointer;
 }

@@ -1,8 +1,10 @@
 const canvas = document.querySelector(".canvas");
 const scoreCount = document.querySelector(".score");
-const gameUI = document.querySelector(".game_ui");
-const gameUIScore = document.querySelector(".game_ui_score");
-const restartBtn = document.querySelector(".game_ui_restart_btn");
+const gameOverUI = document.querySelector(".game_over_ui");
+const gameOverUIScore = document.querySelector(".game_over_ui_score");
+const restartBtn = document.querySelector(".game_over_ui_restart_btn");
+const gameStartUI = document.querySelector(".game_start_ui");
+const gameStartBtn = document.querySelector(".game_start_ui_btn");
 
 canvas.width = window.innerWidth; // you can use just inner width
 canvas.height = window.innerHeight;
@@ -18,8 +20,8 @@ const particles = [];
 let animationId;
 let intervalId;
 
-animate()
-spawnEnemies();
+/* animate()
+spawnEnemies(); */
 
 function animate() {
    
@@ -58,8 +60,8 @@ function animate() {
         if(distance - player.radius - enemy.radius < 1) {
             cancelAnimationFrame(animationId);
             clearInterval(intervalId);
-            gameUIScore.innerHTML = score;
-            gameUI.style.display = "block";
+            gameOverUIScore.innerHTML = score;
+            gameOverUI.style.display = "block";
         }
 
 
@@ -105,11 +107,18 @@ window.addEventListener("click", (event) => {
     projectiles.push(projectile);
 });
 
+gameStartBtn.addEventListener("click",() => {
+    gameStartUI.style.display = "none";
+    init();
+    animate();
+    spawnEnemies();
+});
+
 restartBtn.addEventListener("click", (event) => {
   init();
   animate();
   spawnEnemies();
-  gameUI.style.display = "none";
+  gameOverUI.style.display = "none";
 });
 
 function init() {
@@ -119,7 +128,7 @@ function init() {
     score = 0;
     animationId
     scoreCount.innerHTML = score;
-    gameUIScore.innerHTML = score;
+    gameOverUIScore.innerHTML = score;
 }
 
 function spawnEnemies() {
