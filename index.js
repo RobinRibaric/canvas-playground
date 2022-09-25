@@ -2,19 +2,21 @@ const canvas = document.querySelector(".canvas");
 const scoreCount = document.querySelector(".score");
 const gameUI = document.querySelector(".game_ui");
 const gameUIScore = document.querySelector(".game_ui_score");
+const restartBtn = document.querySelector(".game_ui_restart_btn");
 
 canvas.width = window.innerWidth; // you can use just inner width
 canvas.height = window.innerHeight;
 
 const ctx = canvas.getContext("2d");
 
-const player = new Player(canvas.width / 2, canvas.height / 2, 30, "white");
+let player = new Player(canvas.width / 2, canvas.height / 2, 30, "white");
 //const projectile = new Projectile(canvas.width / 2, canvas.height / 2, 5, 'red', {x: 1, y: 1,});
 let score = 0;
-const projectiles = [];
-const enemies = [];
+let projectiles = [];
+let enemies = [];
 const particles = [];
 let animationId;
+let intervalId;
 
 animate()
 spawnEnemies();
@@ -55,6 +57,7 @@ function animate() {
         //Ending the game on player collision
         if(distance - player.radius - enemy.radius < 1) {
             cancelAnimationFrame(animationId);
+            clearInterval(intervalId);
             gameUIScore.innerHTML = score;
             gameUI.style.display = "block";
         }
@@ -101,8 +104,26 @@ window.addEventListener("click", (event) => {
     const projectile = new Projectile(canvas.width / 2, canvas.height / 2, 5, 'white', velocity);
     projectiles.push(projectile);
 });
+
+restartBtn.addEventListener("click", (event) => {
+  init();
+  animate();
+  spawnEnemies();
+  gameUI.style.display = "none";
+});
+
+function init() {
+    player = new Player(canvas.width / 2, canvas.height / 2, 30, "white");
+    enemies = [];
+    projectiles = [];
+    score = 0;
+    animationId
+    scoreCount.innerHTML = score;
+    gameUIScore.innerHTML = score;
+}
+
 function spawnEnemies() {
-   setInterval(() => {
+    intervalId = setInterval(() => {
         const radius = Math.random() * (30 - 8) + 8;
         let x = 0;
         let y = 0;
