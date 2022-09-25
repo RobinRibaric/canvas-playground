@@ -1,10 +1,16 @@
 class Enemy {
-    constructor(x, y, radius, color, velocity) {
+    constructor(x, y, radius, color, velocity, player) {
         this.x = x;
         this.y = y;
         this.color = color;
         this.velocity = velocity;
         this.radius = radius;
+        this.player = player;
+        this.type = "Linear";
+
+        if(Math.random() < 0.5) {
+            this.type = "Homing";
+        }
     }
 
     draw(ctx) {
@@ -16,6 +22,10 @@ class Enemy {
 
     update(ctx) {
         this.draw(ctx);
+        if(this.type === "Homing") {
+            const angle = Math.atan2(this.player.y - this.y, this.player.x - this.x);
+            this.velocity = {x: Math.cos(angle), y: Math.sin(angle)};
+        }
         this.x = this.x + this.velocity.x;
         this.y = this.y + this.velocity.y;
     }
