@@ -1,4 +1,5 @@
 const canvas = document.querySelector(".canvas");
+const scoreCount = document.querySelector(".score");
 
 canvas.width = window.innerWidth; // you can use just inner width
 canvas.height = window.innerHeight;
@@ -7,7 +8,7 @@ const ctx = canvas.getContext("2d");
 
 const player = new Player(canvas.width / 2, canvas.height / 2, 30, "white");
 //const projectile = new Projectile(canvas.width / 2, canvas.height / 2, 5, 'red', {x: 1, y: 1,});
-
+let score = 0;
 const projectiles = [];
 const enemies = [];
 const particles = [];
@@ -79,6 +80,8 @@ function animate() {
                 } else {
                     setTimeout(() => {
                         enemies.splice(enemyIndex, 1);
+                        score += 1;
+                        scoreCount.innerHTML = `${score}`;
                         projectiles.splice(projectileIndex, 1);
                     }, 0);
                 }
