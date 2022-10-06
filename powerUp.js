@@ -30,5 +30,6 @@ class PowerUp {
     update(ctx) {
         this.draw(ctx);
         this.radians += 0.01;
+        this.position.x += this.velocity.x;
     }
 }

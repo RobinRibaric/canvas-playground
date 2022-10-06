@@ -17,17 +17,32 @@ let score = 0;
 let projectiles = [];
 let enemies = [];
 const particles = [];
-const powerUp = new PowerUp({
-    position: {x: 100, y: 100},
-});
+let frames = 0;
 let powerUps = [];
 let animationId;
 let intervalId;
+let spawnPowerUpsId;
 
 /* animate()
 spawnEnemies(); */
 
+function init() {
+    player = new Player(canvas.width / 2, canvas.height / 2, 30, "white");
+    enemies = [];
+    projectiles = [];
+    frames = 0;
+    powerUps = [new PowerUp({
+        position: {x: 100, y: 100},
+    })];
+    score = 0;
+    animationId;
+    spawnPowerUpsId;
+    scoreCount.innerHTML = score;
+    gameOverUIScore.innerHTML = score;
+}
+
 function animate() {
+    frames++;
    
     animationId = requestAnimationFrame(animate);
     ctx.fillStyle = "rgba(0,0,0,0.1)";
@@ -53,7 +68,11 @@ function animate() {
         const speed = 5;
         const angle = Math.atan2(mouse.position.y - player.y, mouse.position.x - player.x);
         const velocity = {x: Math.cos(angle) * speed, y: Math.sin(angle) * speed};
-        projectiles.push(new Projectile(player.x, player.y, 5, "yellow", velocity));
+
+        //Create a new projectile every 2 frames
+        if(frames % 2 === 0) {
+            projectiles.push(new Projectile(player.x, player.y, 5, "yellow", velocity));
+        }
     }
 
     for(let particleIndex = particles.length - 1; particleIndex >= 0; particleIndex--) {
@@ -186,30 +205,12 @@ window.addEventListener("keydown", (event) => {
     }
 });
 
-/* window.addEventListener("keyup", (event) => {
-    console.log(event.key);
-    switch(event.key) {
-        case "ArrowRight":
-            player.velocity.x = 0;
-            break;
-        case "ArrowLeft":
-            player.velocity.x = 0;
-            break;
-        case "ArrowDown":
-            player.velocity.y = 0;
-
-            break;
-        case "ArrowUp":
-            player.velocity.y = 0;
-
-            break;
-    }
-}); */
-
+//Restart Game
 gameStartBtn.addEventListener("click",() => {
     init();
     animate();
     spawnEnemies();
+    spawnPowerUps();
     gsap.to(".game_start_ui", {
         opacity: 0,
         scale: 0.8,
@@ -236,18 +237,7 @@ restartBtn.addEventListener("click", (event) => {
   });
 });
 
-function init() {
-    player = new Player(canvas.width / 2, canvas.height / 2, 30, "white");
-    enemies = [];
-    projectiles = [];
-    powerUps = [new PowerUp({
-        position: {x: 100, y: 100},
-    })];
-    score = 0;
-    animationId
-    scoreCount.innerHTML = score;
-    gameOverUIScore.innerHTML = score;
-}
+
 
 function spawnEnemies() {
     intervalId = setInterval(() => {
@@ -270,4 +260,19 @@ function spawnEnemies() {
         const velocity = {x: Math.cos(angle), y: Math.sin(angle)};
         enemies.push(new Enemy(x, y, radius, color, velocity, player))
     }, 1000);
+}
+
+function spawnPowerUps() {
+    spawnPowerUpsId = setInterval(() => {
+        powerUps.push(new PowerUp({
+            position: {
+                x: 100,
+                y: 100
+            },
+            velocity: {
+                x: 1,
+                y: 0,
+            }
+        }));
+    }, 10000);
 }
