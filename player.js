@@ -6,6 +6,7 @@ class Player {
         this.color = color;
         this.velocity = {x: 0, y: 0};
         this.friction = 0.99;
+        this.powerUp = "";
     }
 
 

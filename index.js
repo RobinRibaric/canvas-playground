@@ -17,6 +17,10 @@ let score = 0;
 let projectiles = [];
 let enemies = [];
 const particles = [];
+const powerUp = new PowerUp({
+    position: {x: 100, y: 100},
+});
+let powerUps = [];
 let animationId;
 let intervalId;
 
@@ -30,6 +34,27 @@ function animate() {
     ctx.fillRect(0,0, canvas.width, canvas.height);
     //ctx.clearRect(0,0,canvas.width,canvas.height);
     player.update(ctx);
+    for(let i = powerUps.length - 1; i >= 0; i--) {
+        const powerUp = powerUps[i];
+        const distance = Math.hypot(player.x - powerUp.position.x, player.y - powerUp.position.y);
+        if(distance < powerUp.image.height / 2 + player.radius) {
+            powerUps.splice(i, 1);
+            player.powerUp = "MachineGun";
+            setTimeout(() => {
+                player.powerUp = null;
+            }, 10000);
+            console.log("hit")
+        }
+        powerUp.update(ctx);
+    }
+
+    // machinge gun animation / implementation
+    if(player.powerUp) {
+        const speed = 5;
+        const angle = Math.atan2(mouse.position.y - player.y, mouse.position.x - player.x);
+        const velocity = {x: Math.cos(angle) * speed, y: Math.sin(angle) * speed};
+        projectiles.push(new Projectile(player.x, player.y, 5, "yellow", velocity));
+    }
 
     for(let particleIndex = particles.length - 1; particleIndex >= 0; particleIndex--) {
         const particle = particles[particleIndex];
@@ -107,6 +132,18 @@ function animate() {
         }
     }
 }
+
+const mouse = {
+    position: {
+        x: 0,
+        y: 0,
+    }
+}
+
+addEventListener("mousemove", (event) => {
+    mouse.position.x = event.clientX;
+    mouse.position.y = event.clientY;
+})
 
 window.addEventListener("click", (event) => {
     const speed = 5;
@@ -203,6 +240,9 @@ function init() {
     player = new Player(canvas.width / 2, canvas.height / 2, 30, "white");
     enemies = [];
     projectiles = [];
+    powerUps = [new PowerUp({
+        position: {x: 100, y: 100},
+    })];
     score = 0;
     animationId
     scoreCount.innerHTML = score;
