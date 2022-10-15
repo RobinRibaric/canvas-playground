@@ -17,6 +17,7 @@ let score = 0;
 let projectiles = [];
 let enemies = [];
 const particles = [];
+let BackgroundParticles = [];
 let frames = 0;
 let powerUps = [];
 let animationId;
@@ -25,6 +26,25 @@ let spawnPowerUpsId;
 
 /* animate()
 spawnEnemies(); */
+
+function createScoreLabel({position, score}) {
+    const scoreLabel = document.createElement('label', );
+    scoreLabel.innerHTML = score;
+    scoreLabel.style.color = "white";
+    scoreLabel.style.position = "absolute";
+    scoreLabel.style.left = `${position.x}px`;
+    scoreLabel.style.top = `${position.y}px`;
+    scoreLabel.style.userSelect = 'none';
+    document.body.appendChild(scoreLabel);
+    gsap.to(scoreLabel, {
+        opacity: 0,
+        y: -30,
+        duration: 0.75,
+        onComplete: () => {
+            scoreLabel.parentNode.removeChild(scoreLabel);
+        }
+    })
+}
 
 function init() {
     player = new Player(canvas.width / 2, canvas.height / 2, 30, "white");
@@ -39,6 +59,17 @@ function init() {
     spawnPowerUpsId;
     scoreCount.innerHTML = score;
     gameOverUIScore.innerHTML = score;
+    BackgroundParticles = [];
+
+    for(let x = 0; x < canvas.width + 15; x += 15) {
+        for(let y = 0; y < canvas.height + 15; y += 15) {
+            BackgroundParticles.push(new BackgroundParticle({
+                position: {x, y}, 
+                radius: 2,
+                color: "blue"
+            }))
+        }
+    }
 }
 
 function animate() {
@@ -47,6 +78,22 @@ function animate() {
     animationId = requestAnimationFrame(animate);
     ctx.fillStyle = "rgba(0,0,0,0.1)";
     ctx.fillRect(0,0, canvas.width, canvas.height);
+
+    BackgroundParticles.forEach((particle) => {
+        const dist = Math.hypot(player.x - particle.position.x, player.y - particle.position.y);
+        if(dist < 100) {
+            particle.alpha = 0;
+
+            if(dist > 70) {
+                particle.alpha = 0.5;
+            } 
+        } else  if(dist > 100 && particle.alpha < 0.1){
+            particle.alpha += 0.01;
+        } else if(dist > 100 && particle.alpha > 0.1) {
+            particle.alpha -= 0.01;
+        }
+        particle.draw(ctx);
+    });
     //ctx.clearRect(0,0,canvas.width,canvas.height);
     player.update(ctx);
     for(let i = powerUps.length - 1; i >= 0; i--) {
@@ -147,9 +194,28 @@ function animate() {
                     gsap.to(enemy, {
                         radius: enemy.radius - 10,
                     });
+                    createScoreLabel({position: {
+                        x: projectile.x,
+                        y: projectile.y
+                    }, score: 100});
                     projectiles.splice(projectileIndex, 1);
                 } else {
                     //Remove enemy and projectile
+                    createScoreLabel({position: {
+                        x: projectile.x,
+                        y: projectile.y
+                    }, score: 150});
+                    BackgroundParticles.forEach((backgroundParticle) => {
+                        /* gsap.set(backgroundParticle, {
+                            color: "white",
+                            alpha: 1,
+                        }) */
+                        gsap.to(backgroundParticle, {
+                            color: enemy.color,
+                            alpha: 0.1,
+                        })
+                        backgroundParticle.color = enemy.color;
+                    })
                     enemies.splice(enemyIndex, 1); 
                     projectiles.splice(projectileIndex, 1);
                     score += 150;
