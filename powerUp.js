@@ -8,9 +8,10 @@ class PowerUp {
         this.image.src = "./images/lightningBolt.png";
         gsap.to(this, {
             alpha: 0,
-            duration: 0.3,
+            duration: 0.2,
             repeat: -1,
             yoyo: true,
+            ease: "linear"
         });
 
         this.radians = 0;
@@ -23,7 +24,7 @@ class PowerUp {
         ctx.rotate(this.radians);
         ctx.translate(-this.position.x - this.image.width / 2, -this.position.y - this.image.height / 2);
 
-        ctx.drawImage(this.image, 100, 100);
+        ctx.drawImage(this.image, this.position.x, this.position.y);
         ctx.restore();
     }
 

@@ -51,20 +51,30 @@ function animate() {
     player.update(ctx);
     for(let i = powerUps.length - 1; i >= 0; i--) {
         const powerUp = powerUps[i];
+
+        if(powerUp.position.x > canvas.width) {
+            powerUps.splice(i, 1);
+        } else {
+            powerUp.update(ctx);
+        }
+
+
         const distance = Math.hypot(player.x - powerUp.position.x, player.y - powerUp.position.y);
+
         if(distance < powerUp.image.height / 2 + player.radius) {
             powerUps.splice(i, 1);
             player.powerUp = "MachineGun";
+            player.color = "yellow";
             setTimeout(() => {
                 player.powerUp = null;
+                player.color = "white";
             }, 10000);
             console.log("hit")
         }
-        powerUp.update(ctx);
     }
 
     // machinge gun animation / implementation
-    if(player.powerUp) {
+    if(player.powerUp === "MachineGun") {
         const speed = 5;
         const angle = Math.atan2(mouse.position.y - player.y, mouse.position.x - player.x);
         const velocity = {x: Math.cos(angle) * speed, y: Math.sin(angle) * speed};
@@ -266,11 +276,11 @@ function spawnPowerUps() {
     spawnPowerUpsId = setInterval(() => {
         powerUps.push(new PowerUp({
             position: {
-                x: 100,
-                y: 100
+                x: -30,
+                y: Math.random() * canvas.height
             },
             velocity: {
-                x: 1,
+                x: Math.random() * 1,
                 y: 0,
             }
         }));
